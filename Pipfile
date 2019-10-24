@@ -10,6 +10,7 @@ ipython = "*"
 boto3 = "*"
 ru = "*"
 run = "*"
+click = "*"
 
 [requires]
 python_version = "3.7"
