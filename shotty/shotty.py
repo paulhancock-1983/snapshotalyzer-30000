@@ -10,7 +10,7 @@ def filter_instances(project):
     if project:
          filters = [{'Name':'tag:Project', 'Values':[project]}]
          instances = ec2.instances.filter(Filter=filters)
-     else:
+    else:
          instances = ec2.instances.all()
 
     return instances
@@ -20,7 +20,7 @@ def instances():
     """Commands for instances"""
 @instances.command('list')
 @click.option('--project', default=None,
-"Only instances for project (tag Project:<name>)")
+help="Only instances for project (tag Project:<name>)")
 def list_instances(project):
     "List ec2 instance"
 
@@ -33,23 +33,22 @@ def list_instances(project):
             i.instance_type,
             i.placement['AvailabilityZone'],
             i.state['Name'],
-            i.public_dns_name
-            tags.get('Project', '<no project>'
-            ))))
+            i.public_dns_name,
+            tags.get('Project', '<no project>')
+            )))
 
         return
 
-@instances.command('start')
-@click.option('--project', default=None,
-help='Only instances for project')
-def start instance(project):
+@instances.command('stop')
+@click.option('--project', default=None)
+def stop_instances(project):
     "start EC2 instances"
 
     instances = filter_instances(project)
 
     for i in instances:
-        print("starting {0}...".format(i.id))
-        i.start()
+        print("stopping {0}...".format(i.id))
+        i.stop()
 
     return
 
